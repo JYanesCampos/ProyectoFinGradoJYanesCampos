@@ -1,5 +1,10 @@
 <?php
-require_once('./php/funciones.php');
+include_once ('./php/config.php');
+include_once('./php/funciones.php');
+
+$conexion = mysqli_connect(Config::BD_HOST,Config::BD_USER,Config::PASSWORD,Config::BD_NAME);
+mysqli_set_charset($conexion, "utf8");
+
 ?>
 
 <!DOCTYPE html>
@@ -94,7 +99,7 @@ require_once('./php/funciones.php');
         </div>
     </div>
 
-    <!-- REGISTRAR Usuario -->
+    <!-- REGISTRAR USUARIO -->
     <div class="container displayNone" id="containerRegistrarUsuario">
       <div class="row">
         <div class="col-10 p-2 col-md-6 offset-md-3 offset-1">
@@ -166,42 +171,42 @@ require_once('./php/funciones.php');
               <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
             </div>
             <div class="carousel-inner">
-<?php
+            <?php
 
-// BUCLE PARA CREAR LOS ITEMS DEL CAROUSEL. 
-// EL PRIMERO TIENE QUE SER CLASS="CAROUSEL-ITEM *ACTIVE*", LOS DEMAS NO LLEVAN ACTIVE
+            // BUCLE PARA CREAR LOS ITEMS DEL CAROUSEL. 
+            // EL PRIMERO TIENE QUE SER CLASS="CAROUSEL-ITEM *ACTIVE*", LOS DEMAS NO LLEVAN ACTIVE
+            // EL PRIMERO DEBERÍA SER EL DE "URBANIZACION" PARA QUEDAR MAS BONITO.
 
+            $sql="SELECT * FROM imagen WHERE texto_carousel IS NOT NULL";
+            $imagenesBDD = mysqli_query($conexion, $sql);
 
-
-?>
-              <div class="carousel-item active">
-                <img src="img/urbanizacion.jpg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Urbanización de nueva construcción.</h5>
-                  <p>Casa preparada tanto para el verano como para el frío.</p>
+            $primero = true;
+            foreach($imagenesBDD as $fila) // PINTA EL CAROUSEL CON LAS IMAGENES SACADAS DE LA BDD Y SU INFORMACIÓN
+            {
+              if($primero){
+                $primero = false;
+            ?>
+                <div class="carousel-item active">
+                  <img src="img/<?=$fila['nombre']?>.jpg" class="d-block w-100" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5><?=$fila['titulo_carousel']?></h5>
+                    <p><?=$fila['texto_carousel']?></p>
+                  </div>
                 </div>
-              </div>
-              <div class="carousel-item">
-                <img src="img/salon.jpg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Salón y cocina.</h5>
-                  <p>Amplios para poder hacer tu estancia lo mas relajada posible.</p>
+            <?php
+              }else{
+            ?>
+                <div class="carousel-item">
+                  <img src="img/<?=$fila['nombre']?>.jpg" class="d-block w-100" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5><?=$fila['titulo_carousel']?></h5>
+                    <p><?=$fila['texto_carousel']?></p>
+                  </div>
                 </div>
-              </div>
-              <div class="carousel-item">
-                <img src="img/bedroom.jpg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Habitaciones comodas.</h5>
-                  <p>Listas para que desconectes en tus vacaciones.</p>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="img/pool.jpg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Piscina en el patio.</h5>
-                  <p>Para los días calurosos de verano, relájate en nuestra piscina.</p>
-                </div>
-              </div>
+            <?php
+              }
+            }
+            ?>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -215,20 +220,96 @@ require_once('./php/funciones.php');
         </div>
       </div>
 
+      <?php
+
+      $sql="SELECT * FROM casa";
+      $casaBDD = mysqli_query($conexion, $sql);
+
+      $sql="SELECT equipamiento.nombre
+        FROM equipamiento
+        INNER JOIN equipamiento_casa
+        ON equipamiento_casa.id_equipamiento=equipamiento.id_equipamiento
+        WHERE equipamiento_casa.id_casa=1";
+      $equipamientoCasa = mysqli_query($conexion, $sql);
+
+      $sql="SELECT servicio.nombre
+      FROM servicio
+      INNER JOIN servicio_casa
+      ON servicio_casa.id_servicio=servicio.id_servicio
+      WHERE servicio_casa.id_casa=1";
+      $servicioCasa = mysqli_query($conexion, $sql);
+
+      ?>
+
       <!--INFORMACIÓN-->
       <div class="row">
         <div class="col text-center my-5">
           <p class="h3">Información General</p>
+
+          <div class="row">
+            <div class="col text-end">
+              <p>Numero de habitaciones:</p>
+              <p>Numero de camas:</p>
+            </div>
+
+            <div class="col text-start">
+          <?php
+          foreach($casaBDD as $fila){
+
+            echo "<p>".$fila['num_habitaciones']."</p>";
+            echo "<p>".$fila['num_camas']."</p>";
+
+          }
+          ?>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6 text-end p-2 px-md-5">
+                    <p class="h4">Equipamiento</p>
+          <?php
+          foreach($equipamientoCasa as $equipamiento){
+            echo "<p>".$equipamiento['nombre']."</p>";
+          }
+          ?>
+                  </div>
+
+                  <div class="col-6  p-2 px-md-5">
+                    <p class="h4">Servicios</p>
+          <?php
+          foreach($servicioCasa as $servicio){
+            echo "<p>".$servicio['nombre']."</p>";
+          }
+          ?>
+        </div>
+      </div>
+      <!--  -->
+      <div class="row mx-2">
+        <div class="col text-center">
+          <p class="h4">Dirección</p>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d932.8002374036969!2d-5.932422617151933!3d37.32095488252057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126fd7c70ee133%3A0x9ecb6311fc2e8400!2sC.%20Azafr%C3%A1n%2C%20117%2C%2041089%20Montequinto%2C%20Sevilla!5e0!3m2!1ses!2ses!4v1670278261072!5m2!1ses!2ses" 
+            width="auto" 
+            height="auto" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
 
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <div class="container mb-5" id="footer">
       <div class="row">
-        <div class="col">
-          
+        <div class="col text-center">
+          Footer
         </div>
       </div>
-
-
     </div>
 
     <!--JS Bootstrap-->
