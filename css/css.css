@@ -1,3 +1,7 @@
 .displayNone, .displayAdmin{
     display:none;
 }
+
+.error,.error:focus {
+    background-color:#e5ff00 !important;
+  }
