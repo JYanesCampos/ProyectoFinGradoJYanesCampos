@@ -1,5 +1,9 @@
 function procesoRespuestaFormulario(oDatos, sStatus, oXHR) 
 {
+
+    console.log("datos:");
+    console.log(oDatos);
+
     if (oDatos.error) 
     {
         alert(oDatos.mensaje);

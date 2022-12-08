@@ -1,9 +1,11 @@
 <?php
+include_once ('./php/config.php');
 
     $oUsuario = json_decode($_POST['datos']);
-
+/*
     extract($_POST);
     extract ($datos);
+*/
 
     //Conexion con la base de datos
     $conexion = new mysqli(Config::BD_HOST,Config::BD_USER,Config::PASSWORD,Config::BD_NAME);
@@ -37,7 +39,7 @@
         "error" => $error,
         "formulario" => "frmInicioSesion",
         "area" => "containerIniciarSesion",
-        "inicioSesion" => $usuario_salida;
+        "inicioSesion" => $usuario_salida
     );
     $json_salida = json_encode($objeto_salida);
     echo $json_salida;

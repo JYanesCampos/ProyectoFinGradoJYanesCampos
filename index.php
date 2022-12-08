@@ -28,7 +28,7 @@ mysqli_set_charset($conexion, "utf8");
         <div class="row" id="navBarNoLogueado">
             <nav class="navbar navbar-expand-md navbar-light bg-light">
                 <div class="container-fluid">
-                  <a class="navbar-brand" href="#" id="navHome">Home</a>
+                  <button class="navbar-brand btn" id="navHome">Home</button>
                   <button class="navbar-toggler" 
                           type="button" data-bs-toggle="collapse" 
                           data-bs-target="#navbarSupportedContent" 
@@ -53,7 +53,7 @@ mysqli_set_charset($conexion, "utf8");
                       </li>
                     </ul>
                     <form class="d-flex">
-                      <button class="btn" id="navIniciarSesion">Iniciar Sesion</button>
+                      <button class="btn" type="button" id="navIniciarSesion">Iniciar Sesion</button>
                       <button class="displayNone btn" id="navCerrarSesion">Cerrar Sesion</button>
                     </form>
                   </div>
@@ -90,7 +90,7 @@ mysqli_set_charset($conexion, "utf8");
                   </div> 
                   <div class="form-group row p-2">
                     <div class="offset-4 col-8">
-                      <button name="submit" type="submit" class="btn btn-primary" id="btnIniciarSesion">Iniciar Sesion</button>
+                      <button name="submit" type="button" class="btn btn-primary" id="btnIniciarSesion">Iniciar Sesion</button>
                     </div>
                   </div>
                 </form>
@@ -149,7 +149,7 @@ mysqli_set_charset($conexion, "utf8");
             </div>
             <div class="form-group row p-2">
               <div class="offset-4 col-8">
-                <button name="submit" type="submit" class="btn btn-primary">Registrar usuario</button>
+                <button name="submit" type="button" class="btn btn-primary">Registrar usuario</button>
               </div>
             </div>
           </form>
@@ -292,6 +292,7 @@ mysqli_set_charset($conexion, "utf8");
           ?>
         </div>
       </div>
+
       <!-- MAPA -->
       <div class="row mx-2">
         <div class="col text-center">
@@ -307,7 +308,6 @@ mysqli_set_charset($conexion, "utf8");
           </iframe>
         </div>
       </div>
-
 
     </div>
 

@@ -15,8 +15,9 @@ document.querySelector("#navIniciarSesion").addEventListener("click",function() 
 document.querySelector("#navCerrarSesion").addEventListener("click",function() {mostrarArea("containerHome");},false);
 document.querySelector("#btnRegistrarUsuario").addEventListener("click",function() {mostrarArea("containerRegistrarUsuario");},false);
 
-document.querySelector("#btnIniciarSesion").addEventListener("click",function() {iniciarSesion;},false);
+document.querySelector("#btnIniciarSesion").addEventListener("click",function() {iniciarSesion();},false);
 
+//document.querySelector("#btnIniciarSesion").addEventListener("click",function() {mensaje("boton");},false);
 
 //  FUNCIONES
 
@@ -41,6 +42,10 @@ function mostrarArea(areaVisible) {
 }
 
 function iniciarSesion(){
+
+    //BORRAR: para comprobar si asocia la funcion
+    console.log("IniciarSesion");
+
     let oUsuarioInicioSesion = 
     {
         email: frmInicioSesion.emailIniciarSesion.value.trim(),
@@ -50,10 +55,12 @@ function iniciarSesion(){
     let sParametros = "datos="+sUsuarioInicioSesion;
 
     oUsuarioLogueado = buscarUsuarioIniciarSesion(sParametros);
+    
 }
 
 function buscarUsuarioIniciarSesion(sParametros)
 {
+    console.log("BuscarUsuario");
     $.post("./php/iniciarSesion.php", sParametros, procesoRespuestaFormulario, "json");
 }
 
