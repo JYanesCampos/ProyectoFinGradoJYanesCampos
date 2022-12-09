@@ -1,4 +1,5 @@
 <?php
+SESSION_START();
 include_once ('./php/config.php');
 
     $oUsuario = json_decode($_POST['datos']);

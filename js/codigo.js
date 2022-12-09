@@ -1,26 +1,47 @@
 "use strict";
 
-var oUsuarioLogueado = null;
-
-
-
-
 //  MANEJADORES DE EVENTOS
 document.querySelector("#navHome").addEventListener("click",function() {mostrarArea("containerHome");},false);
 document.querySelector("#navGaleria").addEventListener("click",function() {mostrarArea("containerGaleria");},false);
 //document.querySelector("#navSocial").addEventListener("click",function() {mostrarArea("containerSocial");},false);
 //document.querySelector("#navReserva").addEventListener("click",function() {mostrarArea("containerReseva");},false);
-//document.querySelector("#navAdmin").addEventListener("click",function() {mostrarArea("containerAdmin");},false);
+document.querySelector("#navAdmin").addEventListener("click",function() {mostrarArea("containerAdmin");},false);
 document.querySelector("#navIniciarSesion").addEventListener("click",function() {mostrarArea("containerIniciarSesion");},false);
+document.querySelector("#navCerrarSesion").addEventListener("click",function() {cerrarSesion();},false);
 document.querySelector("#navCerrarSesion").addEventListener("click",function() {mostrarArea("containerHome");},false);
 document.querySelector("#btnRegistrarUsuario").addEventListener("click",function() {mostrarArea("containerRegistrarUsuario");},false);
 
 document.querySelector("#btnIniciarSesion").addEventListener("click",function() {iniciarSesion();},false);
 
-//document.querySelector("#btnIniciarSesion").addEventListener("click",function() {mensaje("boton");},false);
+
+// INICIAR PÁGINA
+iniciarPagina();
+
+
+
+/*
+
+    $.ajax({
+        url: "Php/getSocios.php",
+        dataType: 'json',
+        cache: false,
+        async: true, // por defecto
+        method: "GET",
+        success: procesarGetSocios
+    });
+
+*/
+
 
 //  FUNCIONES
 
+    //  iniciar página
+function iniciarPagina(){
+    $.post("./php/iniciarPagina.php", null, procesoRespuestaInicioPagina, "json");
+}
+
+
+    //  mostrar y ocultar
 function funciona(){
     alert("funciona");
 }
@@ -38,32 +59,49 @@ function ocultarTodo(){
 
 function mostrarArea(areaVisible) {
     ocultarTodo();
-    document.getElementById(areaVisible).style.display = "block"
+    document.getElementById(areaVisible).style.display = "block";
 }
 
+    //  iniciar sesion
 function iniciarSesion(){
-
-    //BORRAR: para comprobar si asocia la funcion
-    console.log("IniciarSesion");
 
     let oUsuarioInicioSesion = 
     {
         email: frmInicioSesion.emailIniciarSesion.value.trim(),
         password: frmInicioSesion.passwordIniciarSesion.value.trim(),
+        mantenerSesion: frmInicioSesion.checkboxMantenerSesion.value,
+        formulario: 'frmInicioSesion',
+        area: 'containerHome',
     }
     let sUsuarioInicioSesion = JSON.stringify(oUsuarioInicioSesion);
     let sParametros = "datos="+sUsuarioInicioSesion;
 
-    oUsuarioLogueado = buscarUsuarioIniciarSesion(sParametros);
-    
+    buscarUsuarioIniciarSesion(sParametros);
 }
 
 function buscarUsuarioIniciarSesion(sParametros)
 {
-    console.log("BuscarUsuario");
     $.post("./php/iniciarSesion.php", sParametros, procesoRespuestaFormulario, "json");
 }
 
+function mostrarNavBarLogueado(){
+    document.getElementById("navCerrarSesion").style.display = "block";
+    document.getElementById("navIniciarSesion").style.display = "none";
+}
+
+    //  cerrar session
+function mostrarNavBarDeslogueado(){
+    document.getElementById("navCerrarSesion").style.display = "none";
+    document.getElementById("navIniciarSesion").style.display = "block";
+}
+
+function cerrarSesion(){
+
+    $.post("./php/cerrarSesion.php", null);
+    location.reload();
+}
+
+    //  registro usuario
 function validarDatos(){
     let bTodoOk = true;
     let bPrimerErrorEncontrado = false;

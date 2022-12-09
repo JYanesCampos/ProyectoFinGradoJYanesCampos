@@ -1,10 +1,12 @@
 <?php
-include_once ('./php/config.php');
+SESSION_START();
+include_once ('../php/config.php');
 
     $oUsuario = json_decode($_POST['datos']);
 /*
+    BORRAR
     extract($_POST);
-    extract ($datos);
+    extract ($oUsuario);
 */
 
     //Conexion con la base de datos
@@ -16,14 +18,15 @@ include_once ('./php/config.php');
         die ("Conexion fallida: " . $conexion -> connect_error);
     }
 
-    $sql = "SELECT * FROM usuario WHERE email = $oUsuario->email AND password = $oUsuario->password";
+    $sql = "SELECT * FROM usuario WHERE email = '".$oUsuario->email."' AND password = '".$oUsuario->password."'";
 
     $resultado = $conexion -> query($sql);
 
-    //Si no encuentra usuario en la BBDD con esos datos.
-    if ($resultado -> num_rows == 0)
+
+    //Si no encuentra usuario en la BBDD con esos oUsuario.
+    if (mysqli_num_rows($resultado)== 0)
     {
-        $mensaje = "Usuario y/o contraseña incorrectos.";
+        $mensaje = "Email y/o contraseña incorrectos.";
         $error = true;
     }
     //Si hay usuario en la BBDD.
@@ -31,15 +34,28 @@ include_once ('./php/config.php');
     {
         $mensaje = "Inicio de sesion correcto";
         $error = false;
-        $usuario_salida = mysql_fetch_assoc($resultado);
+        $_SESSION['usuario'] = mysqli_fetch_assoc($resultado);
+
+        if($oUsuario->mantenerSesion){
+            $_SESSION['mantenerSesion'] = true;
+        }
+        else{
+            $_SESSION['mantenerSesion'] = false;
+        }
+
+        //BORRAR
+        /*
+        echo "<pre>";
+        print_r($_SESSION);
+        echo "</pre>";
+        */
     }
 
     $objeto_salida = array (
         "mensaje" => $mensaje,
         "error" => $error,
-        "formulario" => "frmInicioSesion",
-        "area" => "containerIniciarSesion",
-        "inicioSesion" => $usuario_salida
+        "formulario" => $oUsuario->formulario,
+        "area" => "containerHome",
     );
     $json_salida = json_encode($objeto_salida);
     echo $json_salida;

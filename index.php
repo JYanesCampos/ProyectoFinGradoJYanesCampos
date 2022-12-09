@@ -1,4 +1,11 @@
 <?php
+SESSION_START();
+
+//BORRAR
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
+
 include_once ('./php/config.php');
 include_once('./php/funciones.php');
 
@@ -49,7 +56,7 @@ mysqli_set_charset($conexion, "utf8");
                         <button class="btn" id="navReserva">Reserva</button>
                       </li>
                       <li class="nav-item">
-                        <button class="displayAdmin btn" id="navAdmin">Administración</button>
+                        <button class="displayNone btn" id="navAdmin">Administración</button>
                       </li>
                     </ul>
                     <form class="d-flex">
@@ -69,13 +76,13 @@ mysqli_set_charset($conexion, "utf8");
                 <p class="h3 text-center">Iniciar Sesion</p>
                 <form class="w-50" name="frmInicioSesion" id="frmInicioSesion">
                   <div class="form-group row p-2">
-                    <label class="col-4 col-form-label" for="emailIniciarSesion">Email</label> 
+                    <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="emailIniciarSesion">Email</label> 
                     <div class="col-8">
                       <input id="emailIniciarSesion" name="emailIniciarSesion" type="text" class="form-control">
                     </div>
                   </div>
                   <div class="form-group row p-2">
-                    <label for="passwordIniciarSesion" class="col-4 col-form-label">Contraseña</label>
+                    <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="passwordIniciarSesion">Contraseña</label>
                     <div class="col-8">
                       <input id="passwordIniciarSesion" name="passwordIniciarSesion" type="password" class="form-control">
                     </div>
@@ -83,8 +90,8 @@ mysqli_set_charset($conexion, "utf8");
                   <div class="form-group row p-2">
                     <div class="col-8 offset-4">
                       <div class="custom-control custom-checkbox custom-control-inline">
-                        <input name="checkbox" id="checkbox_0" type="checkbox" class="custom-control-input" value="mantenerSesion"> 
-                        <label for="checkbox_0" class="custom-control-label">Mantener Sesión</label>
+                        <input name="checkboxMantenerSesion" id="checkboxMantenerSesion" type="checkbox" class="custom-control-input" value="mantenerSesion"> 
+                        <label for="checkboxMantenerSesion" class="custom-control-label">Mantener Sesión</label>
                       </div>
                     </div>
                   </div> 
@@ -113,36 +120,36 @@ mysqli_set_charset($conexion, "utf8");
           <p class="h3 text-center">Registrate</p>
           <form name="frmRegistroUsuario" id="frmRegistroUsuario">
             <div class="form-group row p-2">
-              <label class="col-4 col-form-label" for="nombreRegistroUsuario">Nombre</label> 
+              <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="nombreRegistroUsuario">Nombre</label> 
               <div class="col-8">
                 <input id="nombreRegistroUsuario" name="nombreRegistroUsuario" type="text" class="form-control">
               </div>
             </div>
             <div class="form-group row p-2">
-              <label class="col-4 col-form-label" for="apellidosRegistroUsuario">Apellidos</label> 
+              <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="apellidosRegistroUsuario">Apellidos</label> 
               <div class="col-8">
                 <input id="apellidosRegistroUsuario" name="apellidosRegistroUsuario" type="text" class="form-control">
               </div>
             </div>
             <div class="form-group row p-2">
-              <label class="col-4 col-form-label" for="telefonoRegistroUsuario">Telefono</label> 
+              <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="telefonoRegistroUsuario">Telefono</label> 
               <div class="col-8">
                 <input id="telefonoRegistroUsuario" name="telefonoRegistroUsuario" type="text" class="form-control">
               </div>
             </div><div class="form-group row p-2">
-              <label class="col-4 col-form-label" for="emailRegistroUsuario">Email</label> 
+              <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="emailRegistroUsuario">Email</label> 
               <div class="col-8">
                 <input id="emailRegistroUsuario" name="emailRegistroUsuario" type="text" class="form-control">
               </div>
             </div>
             <div class="form-group row p-2">
-              <label class="col-4 col-form-label" for="contraseñaRegistroUsuario1">Contraseña</label> 
+              <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="contraseñaRegistroUsuario1">Contraseña</label> 
               <div class="col-8">
                 <input id="contraseñaRegistroUsuario1" name="contraseñaRegistroUsuario1" type="text" class="form-control">
               </div>
             </div>
             <div class="form-group row p-2">
-              <label class="col-4 col-form-label" for="contraseñaRegistroUsuario2">Repita la contraseña</label> 
+              <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="contraseñaRegistroUsuario2">Repita la contraseña</label> 
               <div class="col-8">
                 <input id="contraseñaRegistroUsuario2" name="contraseñaRegistroUsuario2" type="text" class="form-control">
               </div>
@@ -180,6 +187,7 @@ mysqli_set_charset($conexion, "utf8");
             <div class="carousel-inner">
             <?php
 
+            //BORRAR
             // BUCLE PARA CREAR LOS ITEMS DEL CAROUSEL. 
             // EL PRIMERO TIENE QUE SER CLASS="CAROUSEL-ITEM *ACTIVE*", LOS DEMAS NO LLEVAN ACTIVE
             // EL PRIMERO DEBERÍA SER EL DE "URBANIZACION" PARA QUEDAR MAS BONITO.
@@ -424,6 +432,19 @@ mysqli_set_charset($conexion, "utf8");
       </div>
     </div>
 
+    <!-- ADMINISTRACIÓN -->
+    <div class="container displayNone view" id="containerAdmin">
+      <div class="row">
+        <div class="col-10 p-2 col-md-6 offset-md-3 offset-1">
+          <p class="h3 text-center">Administracion</p>
+        </div>
+      </div>
+      <div class="row">
+        <!-- CONTAINER CON LOS FORMULARIOS DE LA ADMINISTRACIÓN -->
+        
+      </div>
+    </div>
+
     <!-- FOOTER -->
     <div class="container mb-5" id="footer">
       <div class="row">
@@ -446,3 +467,7 @@ mysqli_set_charset($conexion, "utf8");
 
 </body>
 </html>
+
+<?php
+  $conexion -> close();
+?>

@@ -1,8 +1,9 @@
 function procesoRespuestaFormulario(oDatos, sStatus, oXHR) 
 {
 
-    console.log("datos:");
-    console.log(oDatos);
+//BORRAR: PARA VERIFICAR LOS DATOS.
+//    console.log("datos:");
+//    console.log(oDatos);
 
     if (oDatos.error) 
     {
@@ -10,19 +11,36 @@ function procesoRespuestaFormulario(oDatos, sStatus, oXHR)
     } 
     else 
     {
-        if(oDatos.inicioSesion !== undefined)
-        {
-            oUsuarioLogueado = oDatos.inicioSesion;
-            //mostrarNavBar(oUsuarioLogueado.admin);
-            if(frmInicioSesion.checkboxMantenerSesion.checked)
-            {
-                let sUsuarioLogueado = JSON.stringify(oUsuarioLogueado);
-                localStorage.setItem("usuarioLogueado",sUsuarioLogueado);
-            }
-        }
+        if(oDatos.formulario == "frmInicioSesion")
+            mostrarNavBarLogueado();
+        
         alert(oDatos.mensaje);
-        oDatos.formulario.reset();
-        $("#"+oDatos.area).hide("normal");
+        document.getElementById(oDatos.formulario).reset();
+        mostrarArea(oDatos.area);
+        mostrarNavBarLogueado();
+    }
+}
+
+function procesoRespuestaInicioPagina(oDatos, sStatus, oXHR) {
+
+    //BORRAR
+    console.log("Usuario: " + oDatos.usuario);
+
+    if(oDatos==undefined || oDatos==null)
+    {  
+        
+    }
+    else if (oDatos.admin)
+    {
+        //REDIRECCION A LA PAGINA PRINCIPAL
+        location.replace("http://localhost/proyecto/proyecto/");
+
+        //MOSTRAR LAS OPCIONES DE UN ADMIN
+        
+    }
+    else
+    {
+        console.log(oDatos.usuario);
     }
 }
 
@@ -56,3 +74,4 @@ function objetoXHR() {
     }
     throw new Error("No se pudo crear el objeto XMLHttpRequest");
 }
+
