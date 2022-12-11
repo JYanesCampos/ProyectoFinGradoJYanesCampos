@@ -2,9 +2,11 @@
 SESSION_START();
 
 //BORRAR
+/*
 echo "<pre>";
 print_r($_SESSION);
 echo "</pre>";
+*/
 
 include_once ('./php/config.php');
 include_once('./php/funciones.php');
@@ -403,12 +405,15 @@ mysqli_set_charset($conexion, "utf8");
       -->
 
       <?php
-      $sql="SELECT * FROM imagen WHERE id_casa=1";
+      $sql="SELECT * 
+        FROM imagen 
+        INNER JOIN casa 
+        ON casa.id_propietario=1";
       $imagenesBDD = mysqli_query($conexion, $sql);
       $posText = true;
       ?>
 
-      <div class="row">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3" data-masonry='{"percentPosition": true }'>
 
         <?php
         foreach($imagenesBDD as $imagenBDD)
@@ -441,8 +446,36 @@ mysqli_set_charset($conexion, "utf8");
       </div>
       <div class="row">
         <!-- CONTAINER CON LOS FORMULARIOS DE LA ADMINISTRACIÓN -->
-        
+
       </div>
+    </div>
+
+    <!-- SOLICITUDES Y RESERVAS -->
+    <div class="container displayNone view" id="containerReservas">
+        <div class="row">
+<?php
+  $sql = "SELECT iFrameCalendario 
+    FROM `propietario` 
+    WHERE id_propietario = 1";
+  $iFrameCalendario = mysqli_query($conexion, $sql);
+  $calendario = mysqli_fetch_assoc($iFrameCalendario);
+
+  /*<?=/$calendario['iFrameCalendario']?>*/
+?>
+          <div class="col">
+            <!--
+            <iframe 
+            src=" AQUI SOLO LA DIRECCION URL DEL CALENDARIO " 
+            style="border:solid 1px #777" frameborder="0" scrolling="no"></iframe>
+            -->
+
+            <iframe 
+              src="https://calendar.google.com/calendar/u/0?cid=cHJvcGlldGFyaW9wcm9waWV0YXJpbzIwMjJAZ21haWwuY29t"
+              style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no">
+            </iframe>
+
+          </div>
+        </div>
     </div>
 
     <!-- FOOTER -->

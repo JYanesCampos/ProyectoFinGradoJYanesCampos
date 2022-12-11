@@ -1,10 +1,12 @@
 "use strict";
 
+var oUsuarioLogueado = null;
+
 //  MANEJADORES DE EVENTOS
 document.querySelector("#navHome").addEventListener("click",function() {mostrarArea("containerHome");},false);
 document.querySelector("#navGaleria").addEventListener("click",function() {mostrarArea("containerGaleria");},false);
 //document.querySelector("#navSocial").addEventListener("click",function() {mostrarArea("containerSocial");},false);
-//document.querySelector("#navReserva").addEventListener("click",function() {mostrarArea("containerReseva");},false);
+document.querySelector("#navReserva").addEventListener("click",function() {mostrarArea("containerReservas");},false);
 document.querySelector("#navAdmin").addEventListener("click",function() {mostrarArea("containerAdmin");},false);
 document.querySelector("#navIniciarSesion").addEventListener("click",function() {mostrarArea("containerIniciarSesion");},false);
 document.querySelector("#navCerrarSesion").addEventListener("click",function() {cerrarSesion();},false);
@@ -69,7 +71,6 @@ function iniciarSesion(){
     {
         email: frmInicioSesion.emailIniciarSesion.value.trim(),
         password: frmInicioSesion.passwordIniciarSesion.value.trim(),
-        mantenerSesion: frmInicioSesion.checkboxMantenerSesion.value,
         formulario: 'frmInicioSesion',
         area: 'containerHome',
     }

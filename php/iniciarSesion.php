@@ -34,21 +34,7 @@ include_once ('../php/config.php');
     {
         $mensaje = "Inicio de sesion correcto";
         $error = false;
-        $_SESSION['usuario'] = mysqli_fetch_assoc($resultado);
-
-        if($oUsuario->mantenerSesion){
-            $_SESSION['mantenerSesion'] = true;
-        }
-        else{
-            $_SESSION['mantenerSesion'] = false;
-        }
-
-        //BORRAR
-        /*
-        echo "<pre>";
-        print_r($_SESSION);
-        echo "</pre>";
-        */
+        $usuarioBDD = mysqli_fetch_assoc($resultado);
     }
 
     $objeto_salida = array (
@@ -56,6 +42,7 @@ include_once ('../php/config.php');
         "error" => $error,
         "formulario" => $oUsuario->formulario,
         "area" => "containerHome",
+        "usuario" => $usuarioBDD,
     );
     $json_salida = json_encode($objeto_salida);
     echo $json_salida;

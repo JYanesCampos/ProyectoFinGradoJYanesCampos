@@ -1,9 +1,7 @@
 function procesoRespuestaFormulario(oDatos, sStatus, oXHR) 
 {
-
-//BORRAR: PARA VERIFICAR LOS DATOS.
-//    console.log("datos:");
-//    console.log(oDatos);
+    //BORRAR
+    //console.log(oDatos);
 
     if (oDatos.error) 
     {
@@ -11,6 +9,7 @@ function procesoRespuestaFormulario(oDatos, sStatus, oXHR)
     } 
     else 
     {
+        /*
         if(oDatos.formulario == "frmInicioSesion")
             mostrarNavBarLogueado();
         
@@ -18,13 +17,18 @@ function procesoRespuestaFormulario(oDatos, sStatus, oXHR)
         document.getElementById(oDatos.formulario).reset();
         mostrarArea(oDatos.area);
         mostrarNavBarLogueado();
+        */
+        oUsuarioLogueado = oDatos.usuario;
+        if(frmInicioSesion.checkboxMantenerSesion){
+            setCookie("usuario", oDatos.usuario, 30);
+        }
     }
 }
 
 function procesoRespuestaInicioPagina(oDatos, sStatus, oXHR) {
 
     //BORRAR
-    console.log("Usuario: " + oDatos.usuario);
+    console.log(oDatos);
 
     if(oDatos==undefined || oDatos==null)
     {  
@@ -32,15 +36,25 @@ function procesoRespuestaInicioPagina(oDatos, sStatus, oXHR) {
     }
     else if (oDatos.admin)
     {
+        //LOGUEAR Y COOKIES
+        oUsuarioLogueado = oDatos.usuario;
+        if(frmInicioSesionAdmin.checkboxMantenerSesionAdmin){
+            setCookie("usuario", oDatos.usuario, 30);
+        }
+
         //REDIRECCION A LA PAGINA PRINCIPAL
         location.replace("http://localhost/proyecto/proyecto/");
 
         //MOSTRAR LAS OPCIONES DE UN ADMIN
-        
+
+
     }
     else
     {
-        console.log(oDatos.usuario);
+        oUsuarioLogueado = oDatos.usuario;
+        if(frmInicioSesion.checkboxMantenerSesion){
+            setCookie("usuario", oDatos.usuario, 30);
+        }
     }
 }
 
