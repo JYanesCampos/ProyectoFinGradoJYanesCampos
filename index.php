@@ -1,5 +1,5 @@
 <?php
-SESSION_START();
+
 
 //BORRAR
 /*
@@ -25,9 +25,13 @@ mysqli_set_charset($conexion, "utf8");
     <title>Casas de vacaciones</title>
     <meta name="description" content="Pagina web para la reserva de casas vacacionales.">
     <meta name="author" content="Joaquin Yanes Campos">
+
     <link rel="stylesheet" href="css\bootstrap.min.css">
     <link rel="stylesheet" href="css\css.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="js/jquery-3.6.3.js"></script>
+    
+
 </head>
 <body>
 
@@ -76,7 +80,7 @@ mysqli_set_charset($conexion, "utf8");
         <div class="row">
             <div class="col-10 p-2 col-md-6 offset-md-3 offset-1">
                 <p class="h3 text-center">Iniciar Sesion</p>
-                <form class="w-50" name="frmInicioSesion" id="frmInicioSesion">
+                <form name="frmInicioSesion" id="frmInicioSesion">
                   <div class="form-group row p-2">
                     <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="emailIniciarSesion">Email</label> 
                     <div class="col-8">
@@ -89,6 +93,16 @@ mysqli_set_charset($conexion, "utf8");
                       <input id="passwordIniciarSesion" name="passwordIniciarSesion" type="password" class="form-control">
                     </div>
                   </div>
+
+                  <div class="form-group row p-2">
+                    <div class="col-8 offset-4">
+                      <div class="custom-control custom-checkbox custom-control-inline">
+                        <input name="mostrarContraseñaInicio" id="mostrarContraseñaInicio" type="checkbox" class="custom-control-input" value="mostrarContraseña"> 
+                        <label for="mostrarContraseñaInicio" class="custom-control-label">Mostrar Contraseña</label>
+                      </div>
+                    </div>
+                  </div> 
+
                   <div class="form-group row p-2">
                     <div class="col-8 offset-4">
                       <div class="custom-control custom-checkbox custom-control-inline">
@@ -97,6 +111,7 @@ mysqli_set_charset($conexion, "utf8");
                       </div>
                     </div>
                   </div> 
+
                   <div class="form-group row p-2">
                     <div class="offset-4 col-8">
                       <button name="submit" type="button" class="btn btn-primary" id="btnIniciarSesion">Iniciar Sesion</button>
@@ -107,7 +122,7 @@ mysqli_set_charset($conexion, "utf8");
                 <form>
                   <div class="container text-center">
                     <div class="col-12 text-center">
-                      <button type="button" class="btn btn-primary btn-lg" id="btnRegistrarUsuario">Regístrate</button>
+                      <button type="button" class="btn btn-primary btn-lg" id="btnFormRegistrarUsuario">Regístrate</button>
                     </div>
                   </div>
                 </form>
@@ -147,18 +162,27 @@ mysqli_set_charset($conexion, "utf8");
             <div class="form-group row p-2">
               <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="contraseñaRegistroUsuario1">Contraseña</label> 
               <div class="col-8">
-                <input id="contraseñaRegistroUsuario1" name="contraseñaRegistroUsuario1" type="text" class="form-control">
+                <input id="contraseñaRegistroUsuario1" name="contraseñaRegistroUsuario1" type="password" class="form-control">
               </div>
             </div>
             <div class="form-group row p-2">
               <label class="col-4 col-form-label d-flex justify-content-end align-items-end pe-3" for="contraseñaRegistroUsuario2">Repita la contraseña</label> 
               <div class="col-8">
-                <input id="contraseñaRegistroUsuario2" name="contraseñaRegistroUsuario2" type="text" class="form-control">
+                <input id="contraseñaRegistroUsuario2" name="contraseñaRegistroUsuario2" type="password" class="form-control">
               </div>
             </div>
             <div class="form-group row p-2">
+              <div class="col-8 offset-4">
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input name="mostrarContraseñaRegistro" id="mostrarContraseñaRegistro" type="checkbox" class="custom-control-input" value="mostrarContraseñaRegistro"> 
+                  <label for="mostrarContraseñaRegistro" class="custom-control-label">Mostrar</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row p-2">
               <div class="offset-4 col-8">
-                <button name="submit" type="button" class="btn btn-primary">Registrar usuario</button>
+                <button name="submit" type="button" class="btn btn-primary" id="btnRegistrarUsuario">Registrar usuario</button>
               </div>
             </div>
           </form>
@@ -172,9 +196,10 @@ mysqli_set_charset($conexion, "utf8");
       <!--TITULO-->
       <div class="row">
         <div class="col text-center my-5">
-          <p class="h2">Casa Vacacional Urbanización Moderna</p>
+          <p class="h2">Casa Vacacional</p>
         </div>
       </div>
+
 
       <!--CAROUSEL-->
       <div class="row">
@@ -239,7 +264,7 @@ mysqli_set_charset($conexion, "utf8");
 
       <?php
 
-      $sql="SELECT * FROM casa";
+      $sql = "SELECT * FROM casa WHERE id_casa = 1";
       $casaBDD = mysqli_query($conexion, $sql);
 
       $sql="SELECT equipamiento.nombre
@@ -413,28 +438,36 @@ mysqli_set_charset($conexion, "utf8");
       $posText = true;
       ?>
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3" data-masonry='{"percentPosition": true }'>
+      <!--<div class="grid">-->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3" data-masonry='{"percentPosition": true}'>
 
-        <?php
-        foreach($imagenesBDD as $imagenBDD)
-        {
-        ?>
+          <?php
+          foreach($imagenesBDD as $imagenBDD)
+          {
+          ?>
 
-        <div class="col col-sm-6 col-md-4 my-2">
-          <div class="card">
-            <img src="img/<?=$imagenBDD['nombre']?>.jpg" alt="<?=$imagenBDD['texto_alt']?>">
-            <div class="card-body text-center">
-              <p class="h4"><?=$imagenBDD['titulo']?></p>
-              <p><?=$imagenBDD['texto']?></p>
+          <div class="col">
+            <div class="card my-3">
+              <!--
+                <img src="img/<?=$imagenBDD['nombre']?>.jpg" alt="<?=$imagenBDD['texto_alt']?>">
+              -->
+      <?php
+              echo '<img src="data:image/jpeg;base64,'.base64_encode($imagenBDD['img']).'" alt="'.$imagenBDD['texto_alt'].'"/>';
+      ?>
+              <div class="card-body text-center">
+                <p class="h4"><?=$imagenBDD['titulo']?></p>
+                <p><?=$imagenBDD['texto']?></p>
+              </div>
             </div>
           </div>
+
+          <?php
+          }
+          ?>
+
         </div>
+      <!--</div>-->
 
-        <?php
-        }
-        ?>
-
-      </div>
     </div>
 
     <!-- ADMINISTRACIÓN -->
@@ -453,28 +486,49 @@ mysqli_set_charset($conexion, "utf8");
     <!-- SOLICITUDES Y RESERVAS -->
     <div class="container displayNone view" id="containerReservas">
         <div class="row">
-<?php
-  $sql = "SELECT iFrameCalendario 
-    FROM `propietario` 
-    WHERE id_propietario = 1";
-  $iFrameCalendario = mysqli_query($conexion, $sql);
-  $calendario = mysqli_fetch_assoc($iFrameCalendario);
-
-  /*<?=/$calendario['iFrameCalendario']?>*/
-?>
+        <?php
+        /*
+          $sql = "SELECT iFrameCalendario 
+            FROM `propietario` 
+            WHERE id_propietario = 1";
+          $iFrameCalendario = mysqli_query($conexion, $sql);
+          $calendario = mysqli_fetch_assoc($iFrameCalendario);
+          */
+          /*<?=/$calendario['iFrameCalendario']?>*/
+        ?>
           <div class="col">
-            <!--
+        <!--
             <iframe 
             src=" AQUI SOLO LA DIRECCION URL DEL CALENDARIO " 
             style="border:solid 1px #777" frameborder="0" scrolling="no"></iframe>
-            -->
+        -->
 
+        <!--
             <iframe 
-              src="https://calendar.google.com/calendar/u/0?cid=cHJvcGlldGFyaW9wcm9waWV0YXJpbzIwMjJAZ21haWwuY29t"
-              style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no">
+              src="https://calendar.google.com/calendar/embed?height=600&wkst=2&bgcolor=%23ffffff&ctz=Europe%2FMadrid&src=cHJvcGlldGFyaW9wcm9waWV0YXJpbzIwMjJAZ21haWwuY29t&color=%23039BE5" 
+              style="border:solid 1px #777" wc
+              width="800" 
+              height="600" 
+              frameborder="0" 
+              scrolling="no">
             </iframe>
+        -->
+
+    
 
           </div>
+        </div>
+    </div>
+
+    <!-- REDES SOCIALES -->
+    <div class="container displayNone view" id="containerSocial">
+        <div class="row">
+          
+          <div class="col p-4">
+            <script src="https://apps.elfsight.com/p/platform.js" defer></script>
+            <div class="elfsight-app-7a0f4d02-08bf-4e33-a4a0-4d14d889fd1d"></div>
+          </div>
+
         </div>
     </div>
 
@@ -489,15 +543,26 @@ mysqli_set_charset($conexion, "utf8");
 
     <!--JS Bootstrap-->
     <script src="js\bootstrap.bundle.min.js"></script>
+
     <!--JS Ajax-->
-    <script src="js/ajax.js"></script>
+    <script src="js\ajax.js"></script>
+
     <!--JS Auxiliar-->
     <script src="js\cookiesandxml.js"></script>
+
     <!--JS Codigo-->
     <script src="js\codigo.js"></script>
-    <!--MASONRY-->
-    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
 
+    <!--MASONRY-->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" 
+      integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" 
+      crossorigin="anonymous" 
+      async>
+    </script>
+      -->
+    <script src="js\masonry-docs.min.js"></script>    
+    
 </body>
 </html>
 

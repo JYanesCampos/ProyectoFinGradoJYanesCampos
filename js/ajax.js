@@ -1,7 +1,8 @@
+
+"use strict";
+
 function procesoRespuestaFormulario(oDatos, sStatus, oXHR) 
 {
-    //BORRAR
-    //console.log(oDatos);
 
     if (oDatos.error) 
     {
@@ -9,26 +10,43 @@ function procesoRespuestaFormulario(oDatos, sStatus, oXHR)
     } 
     else 
     {
-        /*
+    /*
         if(oDatos.formulario == "frmInicioSesion")
             mostrarNavBarLogueado();
-        
         alert(oDatos.mensaje);
         document.getElementById(oDatos.formulario).reset();
         mostrarArea(oDatos.area);
         mostrarNavBarLogueado();
-        */
-        oUsuarioLogueado = oDatos.usuario;
-        if(frmInicioSesion.checkboxMantenerSesion){
-            setCookie("usuario", oDatos.usuario, 30);
+    */
+        
+        if(oDatos.formulario == "frmInicioSesion")
+        {
+            oUsuarioLogueado = oDatos.usuario;
+            if(oDatos.mantenerSesion){                
+                let sUsuario = JSON.stringify(oDatos.usuario);
+                setCookie("usuario", sUsuario, 30);
+            }
+            
+            document.getElementById(oDatos.formulario).reset();
+
+            mostrarArea("containerHome");
+            mostrarNavBarLogueado();
+            alert(oDatos.mensaje);
+        }
+
+        if(oDatos.formulario == "frmRegistroUsuario")
+        {
+            mostrarArea("containerIniciarSesion");
+            document.getElementById(oDatos.formulario).reset();
+            alert(oDatos.mensaje);
         }
     }
 }
 
+/*
 function procesoRespuestaInicioPagina(oDatos, sStatus, oXHR) {
 
     //BORRAR
-    console.log(oDatos);
 
     if(oDatos==undefined || oDatos==null)
     {  
@@ -40,14 +58,15 @@ function procesoRespuestaInicioPagina(oDatos, sStatus, oXHR) {
         oUsuarioLogueado = oDatos.usuario;
         if(frmInicioSesionAdmin.checkboxMantenerSesionAdmin){
             setCookie("usuario", oDatos.usuario, 30);
+            setCookie("admin", true, 30);
         }
 
         //REDIRECCION A LA PAGINA PRINCIPAL
         location.replace("http://localhost/proyecto/proyecto/");
 
         //MOSTRAR LAS OPCIONES DE UN ADMIN
-
-
+        mostrarNavBarLogueado();
+        
     }
     else
     {
@@ -57,6 +76,7 @@ function procesoRespuestaInicioPagina(oDatos, sStatus, oXHR) {
         }
     }
 }
+*/
 
 function pedirAjax(url){
     // Creamos un objeto XHR.

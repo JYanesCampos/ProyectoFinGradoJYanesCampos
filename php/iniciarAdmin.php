@@ -1,5 +1,5 @@
 <?php
-SESSION_START();
+
 include_once ('../php/config.php');
 
 $datosAdmin = json_decode($_POST['datos']);

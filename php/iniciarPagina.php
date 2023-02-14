@@ -1,5 +1,5 @@
 <?php
-SESSION_START();
+
 
 $objeto_salida = array();
 $json_salida;

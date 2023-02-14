@@ -1,11 +1,17 @@
 <?php
-SESSION_START();
-include_once ('./php/config.php');
+
+include_once ('../php/config.php');
 
     $oUsuario = json_decode($_POST['datos']);
 
-    extract($_POST);
-    extract ($datos);
+    /*
+        extract($_POST);
+        extract($datos);
+
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+    */
 
     //Conexion con la base de datos
     $conexion = new mysqli(Config::BD_HOST,Config::BD_USER,Config::PASSWORD,Config::BD_NAME);
@@ -16,17 +22,23 @@ include_once ('./php/config.php');
         die ("Conexion fallida: " . $conexion -> connect_error);
     }
 
-    $sql = "SELECT * FROM usuario WHERE email = $oUsuario->email";
+    $sql = "SELECT * FROM usuario WHERE email = '".$oUsuario->email."'";
 
     $resultado = $conexion -> query($sql);
 
+    
     //Si no hay usuario en la BBDD.
     if ($resultado -> num_rows == 0)
     {
-        $sqlInsert = "INSERT INTO usuario (`nombre`, `apellidos`, `telefono`, `email`, `password`)
-        VALUES (`$nombre`, `$apellidos`, `$telefono`, `$email`, `$contraseña`)";
-
-        $resultadoInsert = $conexion -> query($sqlInsert);
+        $sql = "INSERT INTO usuario (`nombre`, `apellidos`, `telefono`, `email`, `password`)
+            VALUES(
+                '".$oUsuario->nombre."',
+                '".$oUsuario->apellidos."',
+                '".$oUsuario->telefono."',
+                '".$oUsuario->email."',
+                '".$oUsuario->password."'
+            )";
+        $resultado = $conexion -> query($sql);
         $mensaje = "Alta de usuario correcto.";
         $error = false;
     }

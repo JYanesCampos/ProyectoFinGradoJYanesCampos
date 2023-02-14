@@ -1,10 +1,12 @@
 <?php
-SESSION_START();
+
 
 //BORRAR
+/*
 echo "<pre>";
 print_r($_SESSION);
 echo "</pre>";
+*/
 
 ?>
 
@@ -62,6 +64,8 @@ echo "</pre>";
     <script src="js\bootstrap.bundle.min.js"></script>
     <!--JS Ajax-->
     <script src="js/ajax.js"></script>
+    <!--JS Auxiliar-->
+    <script src="js\cookiesandxml.js"></script>
     <!--JS Codigo-->
     <script src="js\codigoAdmin.js"></script>
 </body>
