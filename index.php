@@ -264,26 +264,27 @@ mysqli_set_charset($conexion, "utf8");
 
       <?php
 
-      $sql = "SELECT * FROM casa WHERE id_casa = 1";
-      $casaBDD = mysqli_query($conexion, $sql);
+        $sql = "SELECT * FROM casa WHERE id_casa = 1";
+        $casaBDD = mysqli_query($conexion, $sql);
 
-      $sql="SELECT equipamiento.nombre
-        FROM equipamiento
-        INNER JOIN equipamiento_casa
-        ON equipamiento_casa.id_equipamiento=equipamiento.id_equipamiento
-        WHERE equipamiento_casa.id_casa=1";
-      $equipamientoCasa = mysqli_query($conexion, $sql);
+        $sql="SELECT equipamiento.nombre
+          FROM equipamiento
+          INNER JOIN equipamiento_casa
+          ON equipamiento_casa.id_equipamiento=equipamiento.id_equipamiento
+          WHERE equipamiento_casa.id_casa=1";
+        $equipamientoCasa = mysqli_query($conexion, $sql);
 
-      $sql="SELECT servicio.nombre
-      FROM servicio
-      INNER JOIN servicio_casa
-      ON servicio_casa.id_servicio=servicio.id_servicio
-      WHERE servicio_casa.id_casa=1";
-      $servicioCasa = mysqli_query($conexion, $sql);
+        $sql="SELECT servicio.nombre
+        FROM servicio
+        INNER JOIN servicio_casa
+        ON servicio_casa.id_servicio=servicio.id_servicio
+        WHERE servicio_casa.id_casa=1";
+        $servicioCasa = mysqli_query($conexion, $sql);
 
       ?>
 
       <!--INFORMACIÓN-->
+        <!--GENERAL-->
       <div class="row">
         <div class="col text-center my-5">
           <p class="h3">Información General</p>
@@ -295,31 +296,34 @@ mysqli_set_charset($conexion, "utf8");
             </div>
 
             <div class="col text-start">
-          <?php
-          foreach($casaBDD as $fila){
+              <?php
+              foreach($casaBDD as $fila){
 
-            echo "<p>".$fila['num_habitaciones']."</p>";
-            echo "<p>".$fila['num_camas']."</p>";
+                echo "<p>".$fila['num_habitaciones']."</p>";
+                echo "<p>".$fila['num_camas']."</p>";
 
-          }
-          ?>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              }
+              ?>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                <div class="row">
-                  <div class="col-6 text-end p-2 px-md-5">
-                    <p class="h4">Equipamiento</p>
+      <!--DETALLES-->
+      <div class="row">
+        <!--EQUIPAMIENTO-->
+        <div class="col-6 text-end p-2 px-md-5">
+          <p class="h4">Equipamiento</p>
           <?php
           foreach($equipamientoCasa as $equipamiento){
             echo "<p>".$equipamiento['nombre']."</p>";
           }
           ?>
-                  </div>
+        </div>
 
-                  <div class="col-6  p-2 px-md-5">
-                    <p class="h4">Servicios</p>
+        <!--SERVICIOS-->
+        <div class="col-6  p-2 px-md-5">
+          <p class="h4">Servicios</p>
           <?php
           foreach($servicioCasa as $servicio){
             echo "<p>".$servicio['nombre']."</p>";
@@ -485,39 +489,97 @@ mysqli_set_charset($conexion, "utf8");
 
     <!-- SOLICITUDES Y RESERVAS -->
     <div class="container displayNone view" id="containerReservas">
-        <div class="row">
-        <?php
-        /*
-          $sql = "SELECT iFrameCalendario 
-            FROM `propietario` 
-            WHERE id_propietario = 1";
-          $iFrameCalendario = mysqli_query($conexion, $sql);
-          $calendario = mysqli_fetch_assoc($iFrameCalendario);
-          */
-          /*<?=/$calendario['iFrameCalendario']?>*/
-        ?>
-          <div class="col">
-        <!--
-            <iframe 
-            src=" AQUI SOLO LA DIRECCION URL DEL CALENDARIO " 
-            style="border:solid 1px #777" frameborder="0" scrolling="no"></iframe>
-        -->
 
-        <!--
-            <iframe 
-              src="https://calendar.google.com/calendar/embed?height=600&wkst=2&bgcolor=%23ffffff&ctz=Europe%2FMadrid&src=cHJvcGlldGFyaW9wcm9waWV0YXJpbzIwMjJAZ21haWwuY29t&color=%23039BE5" 
-              style="border:solid 1px #777" wc
-              width="800" 
-              height="600" 
-              frameborder="0" 
-              scrolling="no">
-            </iframe>
-        -->
+      <!--SELECCIÓN DISPLAY-->
+      <div class="row" id="seleccionDisplayReserva">
+        <div class="col d-flex justify-content-center">
+          <button class="btn btn-primary m-2" type="button">Reserva</button>
+          <button class="btn btn-primary m-2" type="button">Solicitud de información</button>
+        </div>
+      </div>
 
-    
+      <!--SOLICITUDES DE INFORMACIÓN-->
+      <div class="row" id="areaSolicitudInformacion">
+        <div class="col">
+          <form>
+            <div class="form-group row mt-3">
+              <label class="col-4 col-form-label text-end" for="tituloSolicitud">Título</label> 
+              <div class="col-8">
+                <input id="tituloSolicitud" name="tituloSolicitud" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="form-group row mt-3">
+              <label for="emailSolicitud" class="col-4 col-form-label text-end">Email</label> 
+              <div class="col-8">
+                <input id="emailSolicitud" name="emailSolicitud" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="form-group row mt-3">
+              <label for="mensajeSolicitud" class="col-4 col-form-label text-end">Tu mensaje</label> 
+              <div class="col-8">
+                <textarea id="mensajeSolicitud" name="mensajeSolicitud" cols="40" rows="5" class="form-control"></textarea>
+              </div>
+            </div>
+            <div class="form-group row mt-3">
+              <div class="col-4"></div> 
+              <div class="col-8">
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input name="subNewsletter" id="subNewsletter_0" type="checkbox" class="custom-control-input" value="subscripcion"> 
+                  <label for="subNewsletter_0" class="custom-control-label">Subscríbeme al Newsletter</label>
+                </div>
+              </div>
+            </div> 
+            <div class="form-group row mt-3">
+              <div class="offset-4 col-8">
+                <button name="submit" type="button" class="btn btn-primary" id="btnEnviarSolicitud">Enviar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
 
+      <!--RESERVA-->
+      <div class="row" id="areaReserva">
+        <div class="col">
+          <p class="h1">RESERVA</p>
+          <?php
+            $dateComponents = getdate();
+
+            $month = $dateComponents['mon']; 			     
+            $year = $dateComponents['year'];
+          ?>
+          <div class="container">
+            <div class="row">
+              <div class="col-6 col-md-4">
+                <?php
+                  echo build_calendar($month,$year);
+                ?>
+              </div>
+              <div class="col-6 col-md-4">
+                <?php
+                  $month++;
+                  if($month=="13"){
+                    $month = 1;
+                    $year++;
+                  }
+                  echo build_calendar($month,$year);
+                ?>
+              </div>
+              <div class="col-6 col-md-4">
+                <?php
+                  $month++;
+                  if($month=="13"){
+                    $month = 1;
+                    $year++;
+                  }
+                  echo build_calendar($month,$year);
+                ?>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+
     </div>
 
     <!-- REDES SOCIALES -->

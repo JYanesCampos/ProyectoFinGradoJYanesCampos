@@ -50,7 +50,17 @@ function iniciarPagina(){
         oUsuarioLogueado = JSON.parse(sUsuarioCookie);
         mostrarNavBarLogueado();
     }
+
+    //  MARCAR LAS RESERVAS
+    pintarReservasCalendario();
 }
+
+
+    //  CALENDARIO 
+function pintarReservasCalendario(){
+    $.get("./php/getReservas.php", null, procesoReservasCalendario, "json");
+}
+
     //  MOSTRAR CONTRASEÑAS
 function mostrarContraseñaInicio(){
     let aContraseñaInicio = document.getElementById("passwordIniciarSesion");
