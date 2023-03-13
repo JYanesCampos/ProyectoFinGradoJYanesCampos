@@ -20,6 +20,10 @@ document.querySelector("#btnRegistrarUsuario").addEventListener("click",function
 document.querySelector("#mostrarContraseñaInicio").addEventListener("click",function(){mostrarContraseñaInicio();},false);
 document.querySelector("#mostrarContraseñaRegistro").addEventListener("click",function(){mostrarContraseñaRegistro();},false);
 
+document.querySelector("#btnSeleccionReserva").addEventListener("click",function(){mostrarSeleccionReserva();},false);
+document.querySelector("#btnSeleccionSolicitud").addEventListener("click",function(){mostrarSeleccionSolicitud();},false);
+document.querySelector("#btnReservarFechas").addEventListener("click",function(){reservarFechasCalendario();},false);
+
 
 
 // INICIAR PÁGINA
@@ -59,6 +63,126 @@ function iniciarPagina(){
     //  CALENDARIO 
 function pintarReservasCalendario(){
     $.get("./php/getReservas.php", null, procesoReservasCalendario, "json");
+}
+
+function reservarFechasCalendario(){
+    
+    let fechaInicio = document.getElementById("reservaFechaInicio").value;
+    let fechaFinal = document.getElementById("reservaFechaFinal").value;
+
+    //  SOLO SI LA FECHA DE ENTRADA ES MAYOR QUE LA FECHA DE SALIDA
+    if (Date.parse(fechaInicio)<Date.parse(fechaFinal)
+        && Date.parse(fechaInicio)>new Date())
+        {
+
+        let arrayFechaInicio = fechaInicio.split("-");
+        let arrayReserva = [];
+
+        let diaInicio = arrayFechaInicio[2];
+        let mesInicio = arrayFechaInicio[1];
+        let annoInicio = arrayFechaInicio[0];
+
+
+
+        //  PARA IR METIENDO LAS FECHAS EN UN ARRAY QUE VERIFICARÁ SI LAS FECHAS ESTAN DISPONIBLES O NO
+        while (fechaInicio != fechaFinal){
+
+            arrayReserva.push(fechaInicio);
+
+            //  PARA PARSEAR Y AUMENTAR LA CANTIDAD A UNA VARIABLE
+            let auxAumentar;
+                
+            //  AUMENTAMOS LA CANTIDAD DE LAS VARIABLES PARA IR PINTANDO EN EL CALENDARIO LOS DÍAS RESERVADOS
+            if((parseInt(mesInicio) % 2) == 0){
+                if(mesInicio=="02"){
+                    if(diaInicio=="28"){
+                        diaInicio="01";
+                        auxAumentar = parseInt(mesInicio);
+                        auxAumentar++;
+                        mesInicio = "0"+auxAumentar.toString();
+                    }else{
+                        auxAumentar = parseInt(diaInicio);
+                        auxAumentar++;
+                        if(auxAumentar<10){     //  SI EL DIA ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                            diaInicio = "0"+auxAumentar.toString();
+                        }else{
+                            diaInicio = auxAumentar.toString();
+                        }
+                    } 
+                }else{
+                    if(diaInicio=="30"){
+                        diaInicio="01";
+                        auxAumentar = parseInt(mesInicio);
+                        auxAumentar++;
+                        if(auxAumentar<10){     //  SI EL MES ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                            mesInicio = "0"+auxAumentar.toString();
+                        }else{
+                            mesInicio = auxAumentar.toString();
+                        }
+                    }else{
+                        auxAumentar = parseInt(diaInicio);
+                        auxAumentar++;
+                        if(auxAumentar<10){     //  SI EL DIA ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                            diaInicio = "0"+auxAumentar.toString();
+                        }else{
+                            diaInicio = auxAumentar.toString();
+                        }
+                    } 
+                }
+            }else{
+                if(diaInicio=="31"){
+                    diaInicio="01";
+                    auxAumentar = parseInt(mesInicio);
+                    auxAumentar++;
+                    if(auxAumentar<10){         //  SI EL MES ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                        mesInicio = "0"+auxAumentar.toString();
+                    }else{
+                        mesInicio = auxAumentar.toString();
+                    }
+                }else{
+                    auxAumentar = parseInt(diaInicio);
+                    auxAumentar++;
+                    if(auxAumentar<10){     //  SI EL DIA ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                        diaInicio = "0"+auxAumentar.toString();
+                    }else{
+                        diaInicio = auxAumentar.toString();
+                    }
+                } 
+            }
+            fechaInicio = annoInicio+"-"+mesInicio+"-"+diaInicio;
+        }
+        arrayReserva.push(fechaFinal);
+
+        let oReserva =
+        {
+            idUsuario: oUsuarioLogueado.id_usuario,
+            arrayReserva: arrayReserva
+        }
+        let sReserva = JSON.stringify(oReserva);
+        let sParametros = "datos="+sReserva;
+
+        $.post("./php/reservarFechasCalendario.php", sParametros, procesoReservaFechas, "json");
+
+    }else{
+        if(Date.parse(fechaInicio)==new Date()){
+            mensaje("La fecha de entrada no debe ser hoy");
+        }else{
+            mensaje("La fecha de entrada debe ser mayor que la fecha de salida");
+        }
+    }
+
+    
+    
+
+    /*
+    let fechaEntrada = document.getElementById("reservaFechaInicio").value;
+    let fechaSalida = document.getElementById("reservaFechaFinal").value;
+
+    if (document.querySelector('[rel="'+fechaEntrada+'"]').style.backgroundColor == 'red' ||
+    document.querySelector('[rel="'+fechaSalida+'"]').style.backgroundColor == 'red'){
+
+    }
+    */
 }
 
     //  MOSTRAR CONTRASEÑAS
@@ -105,6 +229,16 @@ function mostrarArea(areaVisible) {
     document.getElementById(areaVisible).style.display = "block";
 }
 
+function mostrarSeleccionReserva(){
+    document.querySelector("#containerReservas").children.areaSolicitudInformacion.style.display = "none";
+    document.querySelector("#containerReservas").children.areaReserva.style.display = "block";
+}
+
+function mostrarSeleccionSolicitud(){
+    document.querySelector("#containerReservas").children.areaSolicitudInformacion.style.display = "block";
+    document.querySelector("#containerReservas").children.areaReserva.style.display = "none";
+}
+
     //  INICIAR SESION
 function iniciarSesion(){
     let oUsuarioInicioSesion = 
@@ -115,9 +249,6 @@ function iniciarSesion(){
     }
     let sUsuarioInicioSesion = JSON.stringify(oUsuarioInicioSesion);
     let sParametros = "datos="+sUsuarioInicioSesion;
-
-    console.log(sParametros);
-    console.log(sParametros.type);
 
     buscarUsuarioIniciarSesion(sParametros);
 }
@@ -133,6 +264,8 @@ function mostrarNavBarLogueado(){
     if(oUsuarioLogueado.admin=="1"){
         document.getElementById("navAdmin").style.display = "block";
     }
+    document.getElementById("seleccionDisplayReserva").style.display = "block";
+    mostrarSeleccionReserva()
 }
 
     //  CERRAR SESION
@@ -140,11 +273,12 @@ function mostrarNavBarDeslogueado(){
     document.getElementById("navCerrarSesion").style.display = "none";
     document.getElementById("navIniciarSesion").style.display = "block";
     document.getElementById("navAdmin").style.display = "none";
+
+    document.getElementById("seleccionDisplayReserva").style.display = "none";
+    mostrarSeleccionSolicitud();
 }
 
 function cerrarSesion(){
-
-    console.log("Cerrar Sesion");
 
     oUsuarioLogueado = null;
     deleteCookie("ususario");
@@ -292,8 +426,6 @@ function registrarUsuario(){
         }
         let sUsuarioRegistrar = JSON.stringify(oUsuarioRegistrar);
         let sParametros = "datos="+sUsuarioRegistrar;
-
-        console.log(sParametros);
 
         $.post("./php/registrarUsuario.php", sParametros, procesoRespuestaFormulario, "json");
     }

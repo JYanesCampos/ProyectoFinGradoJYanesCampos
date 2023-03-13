@@ -31,13 +31,13 @@ include_once ('../php/config.php');
     if ($resultado -> num_rows == 0)
     {
         $sql = "INSERT INTO usuario (`nombre`, `apellidos`, `telefono`, `email`, `password`)
-            VALUES(
-                '".$oUsuario->nombre."',
-                '".$oUsuario->apellidos."',
-                '".$oUsuario->telefono."',
-                '".$oUsuario->email."',
-                '".$oUsuario->password."'
-            )";
+                VALUES(
+                    '".$oUsuario->nombre."',
+                    '".$oUsuario->apellidos."',
+                    '".$oUsuario->telefono."',
+                    '".$oUsuario->email."',
+                    '".$oUsuario->password."'
+                )";
         $resultado = $conexion -> query($sql);
         $mensaje = "Alta de usuario correcto.";
         $error = false;

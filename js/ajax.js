@@ -113,68 +113,49 @@ function objetoXHR() {
 function procesoReservasCalendario(reservas){
 
     //  POR CADA RESERVA
-    reservas.forEach(function(reserva) {
-        console.log(reserva.fecha_entrada);
-        console.log(reserva.fecha_salida);
-    /*
-        //console.log("Fecha de entrada: "+reserva.fecha_entrada+"\nFecha de salida: "+reserva.fecha_salida);
-        //console.log(reserva.fecha_entrada==reserva.fecha_salida);
-        let fechaEntrada = Date.parse(reserva.fecha_entrada);
-        let fechaSalida = Date.parse(reserva.fecha_salida);
-
-        //date.setDate(date.getDate() + 1)
-        //fechaEntrada.setDate(fechaEntrada.getDate() + 1)
-
-        console.log(reserva.fecha_entrada);
-        console.log(Date.parse(reserva.fecha_entrada));
-    */
-
+    reservas.forEach(function(reserva) 
+    {
         //  SEPARO EN VARIABLES CADA DATO
-        let arrayFechaEntrada = reserva.fecha_entrada.split("-");
-        console.log(arrayFechaEntrada);
+        let fechaEntrada = reserva.fecha_entrada;
+        let fechaSalida = reserva.fecha_salida;
 
-        let arrayFechaSalida = reserva.fecha_salida.split("-");
-        console.log(arrayFechaSalida);
+        let arrayFechaEntrada = fechaEntrada.split("-");
+
+        let arrayFechaSalida = fechaSalida.split("-");
 
         let diaEntrada = arrayFechaEntrada[2];
         let mesEntrada = arrayFechaEntrada[1];
         let annoEntrada = arrayFechaEntrada[0];
 
+        /*
         let diaSalida = arrayFechaSalida[2];
         let mesSalida = arrayFechaSalida[1];
         let annoSalida = arrayFechaSalida[0];
-        
-        console.log("COMPARACIONES WHILE");
-        console.log(diaEntrada != diaSalida);
-        console.log(mesEntrada != mesSalida);
-        console.log(annoEntrada != annoSalida);
+        */
 
         //  MIENTRAS QUE LAS FECHAS NO SEAN IGUALES
-        while(diaEntrada != diaSalida
-            || mesEntrada != mesSalida
-            || annoEntrada != annoSalida)
+        while(fechaEntrada!=fechaSalida)
         {
-            console.log("ENTRA EN EL WHILE");
-            //document.querySelector('[rel="'+annoEntrada+'-'+mesEntrada+'-'+diaEntrada+'"]').style.backgroundColor = "red";
+            document.querySelector('[rel="'+fechaEntrada+'"]').style.backgroundColor = "red";
 
             //  PARA PARSEAR Y AUMENTAR LA CANTIDAD A UNA VARIABLE
             let auxAumentar;
             
             //  AUMENTAMOS LA CANTIDAD DE LAS VARIABLES PARA IR PINTANDO EN EL CALENDARIO LOS DÍAS RESERVADOS
-            if((parseInt(mesEntrada) % 2) != 0){
+            if( !(parseInt(mesEntrada) % 2)){
                 if(mesEntrada=="02"){
                     if(diaEntrada=="28"){
                         diaEntrada="01";
                         auxAumentar = parseInt(mesEntrada);
                         auxAumentar++;
-                        mesEntrada = "0"+auxAumentar.toString;
+                        mesEntrada = "0"+auxAumentar.toString();
                     }else{
                         auxAumentar = parseInt(diaEntrada);
                         auxAumentar++;
                         if(auxAumentar<10){     //  SI EL DIA ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
-                            diaEntrada = "0"+auxAumentar.toString;
+                            diaEntrada = "0"+auxAumentar.toString();
                         }else{
-                            diaEntrada = auxAumentar.toString;
+                            diaEntrada = auxAumentar.toString();
                         }
                     } 
                 }else{
@@ -183,17 +164,17 @@ function procesoReservasCalendario(reservas){
                         auxAumentar = parseInt(mesEntrada);
                         auxAumentar++;
                         if(auxAumentar<10){     //  SI EL MES ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
-                            mesEntrada = "0"+auxAumentar.toString;
+                            mesEntrada = "0"+auxAumentar.toString();
                         }else{
-                            mesEntrada = auxAumentar.toString;
+                            mesEntrada = auxAumentar.toString();
                         }
                     }else{
                         auxAumentar = parseInt(diaEntrada);
                         auxAumentar++;
                         if(auxAumentar<10){     //  SI EL DIA ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
-                            diaEntrada = "0"+auxAumentar.toString;
+                            diaEntrada = "0"+auxAumentar.toString();
                         }else{
-                            diaEntrada = auxAumentar.toString;
+                            diaEntrada = auxAumentar.toString();
                         }
                     } 
                 }
@@ -203,25 +184,38 @@ function procesoReservasCalendario(reservas){
                     auxAumentar = parseInt(mesEntrada);
                     auxAumentar++;
                     if(auxAumentar<10){         //  SI EL MES ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
-                        mesEntrada = "0"+auxAumentar.toString;
+                        mesEntrada = "0"+auxAumentar.toString();
                     }else{
-                        mesEntrada = auxAumentar.toString;
+                        mesEntrada = auxAumentar.toString();
                     }
                 }else{
                     auxAumentar = parseInt(diaEntrada);
                     auxAumentar++;
                     if(auxAumentar<10){     //  SI EL DIA ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
-                        diaEntrada = "0"+auxAumentar.toString;
+                        diaEntrada = "0"+auxAumentar.toString();
                     }else{
-                        diaEntrada = auxAumentar.toString;
+                        diaEntrada = auxAumentar.toString();
                     }
                 } 
             }
+
+            fechaEntrada = annoEntrada+"-"+mesEntrada+"-"+diaEntrada;
         }
 
         //  ULTIMA FECHA DE LA RESERVA
-        document.querySelector('[rel="'+annoEntrada+'-'+mesEntrada+'-'+diaEntrada+'"]').style.backgroundColor = "red";
+        document.querySelector('[rel="'+fechaSalida+'"]').style.backgroundColor = "red";
 
     });
 
+}
+
+function procesoReservaFechas(oDatos){
+    if(oDatos.error){
+        mensaje(oDatos.mensaje);
+    }else{
+        mensaje(oDatos.mensaje);
+        document.getElementById("reservaFechaInicio").value = "";
+        document.getElementById("reservaFechaFinal").value = "";
+        pintarReservasCalendario();
+    }
 }

@@ -1,5 +1,5 @@
 <?php
-include_once ('./php/config.php');
+include_once ('config.php');
 
 
 function build_calendar($month,$year) {
@@ -95,6 +95,105 @@ function build_calendar($month,$year) {
 
     return $calendar;
 
+}
+
+class Funciones{
+    
+    function listaReservasBBDD(){
+        $conexion = new mysqli(Config::BD_HOST,Config::BD_USER,Config::PASSWORD,Config::BD_NAME);
+        $conexion -> set_charset("utf8");
+        $sql = "SELECT fecha_entrada, fecha_salida FROM `reserva`";
+        $resultado = $conexion -> query($sql);
+    
+        $arrayReservasBBDD = array();
+    
+        while($row = $resultado->fetch_assoc()){
+    
+            $fechaEntrada = $row['fecha_entrada'];
+            $fechaSalida = $row['fecha_salida'];
+    
+            $reservaBBDD = array();
+            $reservaBBDD = explode("-",$fechaEntrada);
+            
+            $diaEntrada = $reservaBBDD[2];
+            $mesEntrada = $reservaBBDD[1];
+            $annoEntrada = $reservaBBDD[0];
+    
+            while ($fechaEntrada != $fechaSalida){
+                array_push($arrayReservasBBDD, $fechaEntrada);
+                $aux = 0;
+    
+                //PARA IR AUMENTANDO LAS VARIABLES DEL DIA, MES Y ANNO E IR COMPARANDOLOS CON LA FECHA FINAL
+                if(!(intval($mesEntrada)%2)){  //SI EL MES ES MULTIPLO DE 2
+                    if ($mesEntrada == "02"){   //SI ES MES ES FEBRERO
+                        if ($diaEntrada == "28"){   //SI EL DIA LLEGA A 28 HAY QUE SUMAR UNO AL MES
+                            $diaEntrada = "01";
+                            $aux = intval($mesEntrada);
+                            $aux++;
+                            if($aux<10){     //  SI EL MES ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                                $mesEntrada = "0".strval($aux);
+                            }else{
+                                $mesEntrada = strval($aux);
+                            }
+                        }else{
+                            $aux = intval($diaEntrada);
+                            $aux++;
+                            if($aux<10){     //  SI EL DIA ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                                $diaEntrada = "0".strval($aux);
+                            }else{
+                                $diaEntrada = strval($aux);
+                            }
+                        }
+                    }else{
+                        if($diaEntrada=="30"){
+                            $diaEntrada="01";
+                            $aux = intval($mesEntrada);
+                            $aux++;
+                            if($aux<10){     //  SI EL MES ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                                $mesEntrada = "0".strval($aux);
+                            }else{
+                                $mesEntrada = strval($aux);
+                            }
+                        }else{
+                            $aux = intval($diaEntrada);
+                            $aux++;
+                            if($aux<10){     //  SI EL DIA ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                                $diaEntrada = "0".strval($aux);
+                            }else{
+                                $diaEntrada = strval($aux);
+                            }
+                        }
+                    }
+                }else{  //SI EL MES NO ES MULTIPLO DE 2
+                    if($diaEntrada=="31"){
+                        $diaEntrada="01";
+                        $aux = intval($mesEntrada);
+                        $aux++;
+                        if($aux<10){         //  SI EL MES ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                            $mesEntrada = "0".strval($aux);
+                        }else{
+                            $mesEntrada = strval($aux);
+                        }
+                    }else{
+                        $aux = intval($diaEntrada);
+                        $aux++;
+                        if($aux<10){     //  SI EL DIA ES MENOR QUE 10, DEBERÁ TENER UN 0 DELANTE.
+                            $diaEntrada = "0".strval($aux);
+                        }else{
+                            $diaEntrada = strval($aux);
+                        }
+                    } 
+                }
+    
+                $fechaEntrada = $annoEntrada."-".$mesEntrada."-".$diaEntrada;
+                
+            }
+    
+        }
+    
+        return $arrayReservasBBDD;
+    }
+    
 }
 
 ?>
