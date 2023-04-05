@@ -491,38 +491,39 @@ mysqli_set_charset($conexion, "utf8");
     <div class="container displayNone view" id="containerReservas">
 
       <!--SELECCIÓN DISPLAY-->
-      <div class="row" id="seleccionDisplayReserva">
+      <div class="row displayNone" id="seleccionDisplayReserva">
         <div class="col d-flex justify-content-center">
-          <button class="btn btn-primary m-2" type="button">Reserva</button>
-          <button class="btn btn-primary m-2" type="button">Solicitud de información</button>
+          <button class="btn btn-primary m-2" id="btnSeleccionReserva" type="button">Reserva</button>
+          <button class="btn btn-primary m-2" id="btnSeleccionSolicitud" type="button">Solicitud de información</button>
         </div>
       </div>
 
       <!--SOLICITUDES DE INFORMACIÓN-->
       <div class="row" id="areaSolicitudInformacion">
         <div class="col">
+          <p class="text-center h3">Solicitud de información</p>
           <form>
             <div class="form-group row mt-3">
               <label class="col-4 col-form-label text-end" for="tituloSolicitud">Título</label> 
-              <div class="col-8">
+              <div class="col-5">
                 <input id="tituloSolicitud" name="tituloSolicitud" type="text" class="form-control">
               </div>
             </div>
             <div class="form-group row mt-3">
               <label for="emailSolicitud" class="col-4 col-form-label text-end">Email</label> 
-              <div class="col-8">
+              <div class="col-5">
                 <input id="emailSolicitud" name="emailSolicitud" type="text" class="form-control">
               </div>
             </div>
             <div class="form-group row mt-3">
               <label for="mensajeSolicitud" class="col-4 col-form-label text-end">Tu mensaje</label> 
-              <div class="col-8">
+              <div class="col-5">
                 <textarea id="mensajeSolicitud" name="mensajeSolicitud" cols="40" rows="5" class="form-control"></textarea>
               </div>
             </div>
             <div class="form-group row mt-3">
               <div class="col-4"></div> 
-              <div class="col-8">
+              <div class="col-5">
                 <div class="custom-control custom-checkbox custom-control-inline">
                   <input name="subNewsletter" id="subNewsletter_0" type="checkbox" class="custom-control-input" value="subscripcion"> 
                   <label for="subNewsletter_0" class="custom-control-label">Subscríbeme al Newsletter</label>
@@ -530,7 +531,7 @@ mysqli_set_charset($conexion, "utf8");
               </div>
             </div> 
             <div class="form-group row mt-3">
-              <div class="offset-4 col-8">
+              <div class="offset-4 col-5">
                 <button name="submit" type="button" class="btn btn-primary" id="btnEnviarSolicitud">Enviar</button>
               </div>
             </div>
@@ -539,9 +540,9 @@ mysqli_set_charset($conexion, "utf8");
       </div>
 
       <!--RESERVA-->
-      <div class="row" id="areaReserva">
+      <div class="row displayNone" id="areaReserva">
         <div class="col">
-          <p class="h1">RESERVA</p>
+          <p class="text-center h3">RESERVA</p>
           <?php
             $dateComponents = getdate();
 
@@ -549,6 +550,7 @@ mysqli_set_charset($conexion, "utf8");
             $year = $dateComponents['year'];
           ?>
           <div class="container">
+            <p class="text-center h4">Días reservados:</p>
             <div class="row">
               <div class="col-6 col-md-4">
                 <?php
@@ -576,6 +578,24 @@ mysqli_set_charset($conexion, "utf8");
                 ?>
               </div>
             </div>
+
+            <!--RECOGER LAS FECHAS-->
+            <div class="row m-4 justify-content-center">
+              <div class="col col-sm-4">
+                <label for="reservaFechaInicio">Fecha de inicio:</label>
+                <input id="reservaFechaInicio" class="form-control" type="date" />
+              </div>
+              <div class="col col-sm-4">
+                <label for="reservaFechaFinal">Fecha final:</label>
+                <input id="reservaFechaFinal" class="form-control" type="date" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col d-flex justify-content-center">
+                <button class="btn btn-primary m-2" id="btnReservarFechas" type="button">Reservar fechas</button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -595,13 +615,15 @@ mysqli_set_charset($conexion, "utf8");
     </div>
 
     <!-- FOOTER -->
-    <div class="container mb-5" id="footer">
-      <div class="row">
-        <div class="col text-center">
-          Footer
+    <footer>
+      <div class="container mb-5" id="footer">
+        <div class="row">
+          <div class="col text-center">
+            Footer
+          </div>
         </div>
       </div>
-    </div>
+    </footer>
 
     <!--JS Bootstrap-->
     <script src="js\bootstrap.bundle.min.js"></script>
